@@ -4,14 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useFetchUserProfile from "../hook/useFetchUserProfile";
 const User = () => {
-
-
   const navigate = useNavigate();
   const TokenAuth = useSelector((state) => state.auth);
-  console.log("le token", TokenAuth);
-
   const { userInfo } = useSelector((state) => state.auth);
-
+  const { loading } = useFetchUserProfile(); 
   console.log("userinfo", userInfo);
 
   useEffect(() => {
@@ -19,13 +15,23 @@ const User = () => {
       navigate("/login");
     }
   }, [TokenAuth, navigate]);
+
+  // Vérifie si les données sont en cours de chargement
+  if (loading) {
+    return <div>Loading...</div>; 
+  }
+
+  // Vérifie si userInfo est défini
+  if (!userInfo) {
+    return <div>No user info available</div>; 
+  }
   return (
     <main className="main bg-dark">
       <div className="header">
         <h1>
           Welcome back
           <br />
-          Tony Jarvis!
+          {userInfo.firstName} {userInfo.lastName}!
         </h1>
         <button className="edit-button">Edit Name</button>
       </div>
