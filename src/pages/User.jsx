@@ -1,13 +1,18 @@
 import React from "react";
+import Update from "../components/Update";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useFetchUserProfile from "../hook/useFetchUserProfile";
+
+
 const User = () => {
+
   const navigate = useNavigate();
   const TokenAuth = useSelector((state) => state.auth);
   const { userInfo } = useSelector((state) => state.auth);
-  const { loading } = useFetchUserProfile(); 
+  const { loading } = useFetchUserProfile();
+
   console.log("userinfo", userInfo);
 
   useEffect(() => {
@@ -18,14 +23,19 @@ const User = () => {
 
   // Vérifie si les données sont en cours de chargement
   if (loading) {
-    return <div>Loading...</div>; 
+
+    return <div>Loading...</div>;
+
   }
 
   // Vérifie si userInfo est défini
   if (!userInfo) {
-    return <div>No user info available</div>; 
+
+    return <div>No user info available</div>;
   }
+
   return (
+
     <main className="main bg-dark">
       <div className="header">
         <h1>
@@ -34,6 +44,7 @@ const User = () => {
           {userInfo.firstName} {userInfo.lastName}!
         </h1>
         <button className="edit-button">Edit Name</button>
+        <Update/>
       </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">
