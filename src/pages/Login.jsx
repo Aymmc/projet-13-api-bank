@@ -26,8 +26,10 @@ const Login = () => {
         token: `Bearer ${res.body.token}`,
       }).unwrap();
       dispatch(setCredentialsUser({ ...resProfil }));
-
+      
       navigate("/profil");
+      window.location.reload()
+      
     } catch (err) {
       console.error("Error details:", err);
       console.error("Response status:", err.status); // Ajoutez ceci pour vérifier le statut

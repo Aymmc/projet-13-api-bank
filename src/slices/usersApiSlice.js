@@ -24,17 +24,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     updateUser: builder.mutation({
-      query: (data) => ({
+      query: ({ headers, body }) => ({
         url: `${USERS_URL}/profile`,
         method: 'PUT',
-        body: data,
+        headers,
+        body,
       }),
     }),
+   
+
     getProfil: builder.mutation({
-      query: ({token}) => ({
-        url: `${USERS_URL}/profile` , 
+      query: ({ token }) => ({
+        url: `${USERS_URL}/profile`,
         method: 'POST',
-        headers: {Authorization: token}
+        headers: { Authorization: token }
+        
       }),
     }),
   }),

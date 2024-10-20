@@ -4,15 +4,21 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import useFetchUserProfile from "../hook/useFetchUserProfile";
-
-
+import { useState } from "react";
 const User = () => {
 
   const navigate = useNavigate();
   const TokenAuth = useSelector((state) => state.auth);
   const { userInfo } = useSelector((state) => state.auth);
   const { loading } = useFetchUserProfile();
+  const [isEditing, setIsEditing] = useState(false);
 
+  const handleEditClick = () => {
+    setIsEditing(true); // Passe à l'état d'édition
+  };
+  const handleEditClick2 = () => {
+    setIsEditing(false)
+  }
   console.log("userinfo", userInfo);
 
   useEffect(() => {
@@ -37,15 +43,25 @@ const User = () => {
   return (
 
     <main className="main bg-dark">
-      <div className="header">
-        <h1>
-          Welcome back
-          <br />
-          {userInfo.firstName} {userInfo.lastName}!
-        </h1>
-        <button className="edit-button">Edit Name</button>
-        <Update/>
-      </div>
+       <div className="header">
+      {isEditing ? (
+        <>
+        <Update onCancel={handleEditClick2} /> 
+       
+        </>
+      ) : (
+        <>
+            <h1>
+              Welcome back
+            <br />
+            {userInfo.firstName} {userInfo.lastName}!
+          </h1>
+          <button className="edit-button" onClick={handleEditClick}>
+            Edit Name
+          </button>
+        </>
+      )}
+    </div>
       <h2 className="sr-only">Accounts</h2>
       <section className="account">
         <div className="account-content-wrapper">

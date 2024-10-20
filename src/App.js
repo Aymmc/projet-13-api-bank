@@ -4,7 +4,7 @@ import Footer from './components/Footer'
 import Router from './Router'
 import useFetchUserProfile from './hook/useFetchUserProfile'
 const App = () => {
-  useFetchUserProfile()
+
   return (
     <>
     <Headers />

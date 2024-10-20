@@ -16,7 +16,30 @@ body {
 .main {
   flex: 1;
 }
+input{
+  height: 30Px;
+  border-color: #BDC9D2;
+  margin-left: 10px
+}
+form button {
+  margin-top: 10px;
+  width: 100px;
+  height: 30px;
+  border-color: #B3B3F0;
+  color: #7B71F6;
+  margin-left: 10px;
+}
+.header_signin{
+  display: flex;
+  align-items: center;
+  gap: 50px ;
+}
+.formupdate{
 
+}
+.header{
+  padding-top: 10px;
+}
 .bg-dark {
   background-color: #12002b;
 }
