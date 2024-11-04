@@ -7,12 +7,15 @@ import { useNavigate } from "react-router-dom";
 import { logout } from "../slices/authSlice";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import useFetchUserProfile from '../hook/useFetchUserProfile';
+import Profil from '../img/profil.png'
+import deconnexion from '../img/deconnexion.png'
 const Headers = () => {
   const { userInfo, TokenAuth } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading } = useFetchUserProfile();
 
+  
   // const [logoutApiCall] = useLogoutMutation();
   const logoutHandler = async () => {
     try {
@@ -25,13 +28,10 @@ const Headers = () => {
   };
   if (loading) {
 
-    return <div></div>;
+    return <></>;
 
   }
-  if (!userInfo) {
 
-    return <div>No user info available</div>;
-  }
   return (
     <header>
       <nav className="main-nav">
@@ -44,22 +44,26 @@ const Headers = () => {
           <h1 className="sr-only">Argent Bank</h1>
         </NavLink>
         <div>
-          {!TokenAuth || !TokenAuth.TokenAuth ? (
-            <div className='header_signin'>
-             <h3> {userInfo.firstName}</h3>
+          {!TokenAuth ? (
+            
+            
             <NavLink to='/login' className="main-nav-item">
-              <i className="fa fa-user-circle"></i>
+               <img src={Profil} alt="image profil" className='imgprofil'/>
               Sign In
             </NavLink>
-            </div>
+            
           ) : (
-            <>
-           
+            <div className='header_signin'>
+              <NavLink to='/profil'className='profil'>
+              <img src={Profil} alt="image profil" className='imgprofil'/>
+            <h3> {userInfo.firstName}</h3>
+            </NavLink>
+            {/* <img src={deconnexion} alt="image porte deconnexion" className='imgdeco'/> */}
             <NavLink to="/" onClick={logoutHandler} className="main-nav-item">
-              <i className="fa-solid fa-right-from-bracket"></i>
+            <img src={deconnexion} alt="image porte deconnexion" className='imgdeco'/>
               Sign Out
             </NavLink>
-            </>
+            </div>
           )}
         </div>
       </nav>

@@ -25,14 +25,33 @@ form button {
   margin-top: 10px;
   width: 100px;
   height: 30px;
-  border-color: #B3B3F0;
-  color: #7B71F6;
+  border-color: purple;
+  color: purple;
   margin-left: 10px;
 }
 .header_signin{
   display: flex;
   align-items: center;
-  gap: 50px ;
+  
+}
+.imgprofil {
+  width: 50px;
+}
+.imgdeco {
+  width: 30px;
+}
+.profil{
+  text-decoration: none;
+  display: flex;
+    align-items: center;
+
+}
+.profil:hover{
+  text-decoration: underline;
+}
+.header_signin h3{
+  margin-right: 50px;
+  margin-left: 5px;
 }
 .formupdate{
 
@@ -77,6 +96,9 @@ form button {
 .main-nav-item {
   text-decoration: none;
   margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .main-nav-item:hover {

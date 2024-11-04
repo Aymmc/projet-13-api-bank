@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: API des Transactions
+  description: API pour gérer les transactions des utilisateurs.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+paths:
+  /transactions:
+    get:
+      summary: Récupérer toutes les transactions du mois en cours, groupées par compte.
+      responses:
+        '200':
+          description: Liste des transactions du mois en cours.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: Identifiant de la transaction.
+                    date:
+                      type: string
+                      format: date
+                      description: Date de la transaction.
+                    amount:
+                      type: number
+                      format: float
+                      description: Montant de la transaction.
+                    accountId:
+                      type: string
+                      description: Identifiant du compte associé.
+                    description:
+                      type: string
+                      description: Description de la transaction.
+        '404':
+          description: Aucune transaction trouvée pour le mois en cours.
+
+    post:
+      summary: Ajouter une nouvelle transaction.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  description: Date de la transaction.
+                amount:
+                  type: number
+                  format: float
+                  description: Montant de la transaction.
+                accountId:
+                  type: string
+                  description: Identifiant du compte associé.
+                description:
+                  type: string
+                  description: Description de la transaction.
+      responses:
+        '201':
+          description: Transaction ajoutée avec succès.
+        '400':
+          description: Erreur de validation des données fournies.
+
+  /transactions/{transactionId}:
+    get:
+      summary: Récupérer les détails d'une transaction spécifique.
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Identifiant de la transaction à récupérer.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Détails de la transaction.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: Identifiant de la transaction.
+                  date:
+                    type: string
+                    format: date
+                    description: Date de la transaction.
+                  amount:
+                    type: number
+                    format: float
+                    description: Montant de la transaction.
+                  accountId:
+                    type: string
+                    description: Identifiant du compte associé.
+                  description:
+                    type: string
+                    description: Description de la transaction.
+        '404':
+          description: Transaction non trouvée.
+
+    put:
+      summary: Modifier une transaction existante.
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Identifiant de la transaction à modifier.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+                  description: Nouvelle date de la transaction.
+                amount:
+                  type: number
+                  format: float
+                  description: Nouveau montant de la transaction.
+                accountId:
+                  type: string
+                  description: Nouvel identifiant du compte associé.
+                description:
+                  type: string
+                  description: Nouvelle description de la transaction.
+      responses:
+        '200':
+          description: Transaction modifiée avec succès.
+        '404':
+          description: Transaction non trouvée.
+        '400':
+          description: Erreur de validation des données fournies.
+
+    delete:
+      summary: Supprimer une transaction existante.
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Identifiant de la transaction à supprimer.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Transaction supprimée avec succès.
+        '404':
+          description: Transaction non trouvée.

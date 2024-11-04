@@ -19,7 +19,7 @@ const User = () => {
   const handleEditClick2 = () => {
     setIsEditing(false)
   }
-  console.log("userinfo", userInfo);
+
 
   useEffect(() => {
     if (!TokenAuth || !TokenAuth.TokenAuth) {
