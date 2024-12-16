@@ -32,8 +32,7 @@ const Login = () => {
       
     } catch (err) {
       console.error("Error details:", err);
-      console.error("Response status:", err.status); // Ajoutez ceci pour vérifier le statut
-      console.error("Response data:", err.data); // Ajoutez ceci pour voir les données de réponse
+      console.error("Response data:", err.data);
     }
   };
 
