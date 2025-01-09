@@ -1,160 +1,249 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
-  title: API des Transactions
-  description: API pour gérer les transactions des utilisateurs.
-  version: 1.0.0
-servers:
-  - url: http://localhost:5000/api
+  title: API de Transactions
+  description: API pour gérer les transactions des utilisateurs 
+  version: 1.0.2
 paths:
   /transactions:
     get:
-      summary: Récupérer toutes les transactions du mois en cours, groupées par compte.
+      summary: Liste des transactions de l'utilisateur
+      description: Permet à un utilisateur authentifié de récupérer toutes ses transactions du mois en cours.
+      security:
+        - bearerAuth: []  # Authentification par token Bearer
       responses:
         '200':
-          description: Liste des transactions du mois en cours.
+          description: Transactions récupérées avec succès
           content:
             application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      description: Identifiant de la transaction.
-                    date:
-                      type: string
-                      format: date
-                      description: Date de la transaction.
-                    amount:
-                      type: number
-                      format: float
-                      description: Montant de la transaction.
-                    accountId:
-                      type: string
-                      description: Identifiant du compte associé.
-                    description:
-                      type: string
-                      description: Description de la transaction.
-        '404':
-          description: Aucune transaction trouvée pour le mois en cours.
-
+              examples:
+                success:
+                  value:
+                    - transactionId: "12345"
+                      description: "Achat de fournitures"
+                      type: "debit"
+                      amount: 50.75
+                      date: "2025-01-09"
+                    - transactionId: "12346"
+                      description: "Vente de produit"
+                      type: "credit"
+                      amount: 120.50
+                      date: "2025-01-08"
+        '401':
+          description: Utilisateur non authentifié
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Utilisateur non authentifié"
     post:
-      summary: Ajouter une nouvelle transaction.
+      summary: Ajouter une nouvelle transaction
+      description: Permet à un utilisateur authentifié d'ajouter une nouvelle transaction.
+      security:
+        - bearerAuth: []  # Authentification par token Bearer
       requestBody:
+        description: Informations nécessaires pour ajouter une transaction
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                date:
+                description:
                   type: string
-                  format: date
-                  description: Date de la transaction.
+                  example: "Achat de fournitures"
+                type:
+                  type: string
+                  enum: [debit, credit]
+                  example: "debit"
                 amount:
                   type: number
                   format: float
-                  description: Montant de la transaction.
-                accountId:
+                  example: 50.75
+                date:
                   type: string
-                  description: Identifiant du compte associé.
-                description:
-                  type: string
-                  description: Description de la transaction.
+                  format: date
+                  example: "2025-01-09"
       responses:
         '201':
-          description: Transaction ajoutée avec succès.
+          description: Transaction ajoutée avec succès
+          content:
+            application/json:
+              examples:
+                success:
+                  value:
+                    transactionId: "12347"
+                    description: "Achat de fournitures"
+                    type: "debit"
+                    amount: 50.75
+                    date: "2025-01-09"
         '400':
-          description: Erreur de validation des données fournies.
+          description: Données invalides
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Données invalides"
+        '401':
+          description: Utilisateur non authentifié
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Utilisateur non authentifié"
 
   /transactions/{transactionId}:
     get:
-      summary: Récupérer les détails d'une transaction spécifique.
+      summary: Détails d'une transaction spécifique
+      description: Retourne les détails d'une transaction pour un utilisateur authentifié.
+      security:
+        - bearerAuth: []  # Applique le mécanisme d'authentification pour cet endpoint
       parameters:
         - name: transactionId
           in: path
           required: true
-          description: Identifiant de la transaction à récupérer.
+          description: "ID unique de la transaction"
           schema:
             type: string
+            example: "12345"
       responses:
         '200':
-          description: Détails de la transaction.
+          description: Détails de la transaction récupérés avec succès
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: Identifiant de la transaction.
-                  date:
-                    type: string
-                    format: date
-                    description: Date de la transaction.
-                  amount:
-                    type: number
-                    format: float
-                    description: Montant de la transaction.
-                  accountId:
-                    type: string
-                    description: Identifiant du compte associé.
-                  description:
-                    type: string
-                    description: Description de la transaction.
+              examples:
+                success:
+                  value:
+                    transactionId: "12345"
+                    description: "Achat de fournitures"
+                    type: "debit"
+                    amount: 50.75
+                    date: "2025-01-09"
         '404':
-          description: Transaction non trouvée.
-
+          description: Transaction non trouvée
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Transaction non trouvée"
+        '401':
+          description: Utilisateur non authentifié
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Utilisateur non authentifié"
     put:
-      summary: Modifier une transaction existante.
+      summary: Modifier une transaction existante
+      description: Permet à l'utilisateur de modifier certaines informations d'une transaction existante, à l'exception du montant et de l'id.
+      security:
+        - bearerAuth: []  # Applique le mécanisme d'authentification pour cet endpoint
       parameters:
         - name: transactionId
           in: path
           required: true
-          description: Identifiant de la transaction à modifier.
+          description: "ID unique de la transaction"
           schema:
             type: string
+            example: "12345"
       requestBody:
+        description: Données nécessaires pour modifier la transaction
         required: true
         content:
           application/json:
             schema:
               type: object
               properties:
-                date:
-                  type: string
-                  format: date
-                  description: Nouvelle date de la transaction.
-                amount:
-                  type: number
-                  format: float
-                  description: Nouveau montant de la transaction.
-                accountId:
-                  type: string
-                  description: Nouvel identifiant du compte associé.
                 description:
                   type: string
-                  description: Nouvelle description de la transaction.
+                  example: "Achat de fournitures - modifié"
+                type:
+                  type: string
+                  enum: [debit, credit]
+                  example: "debit"
       responses:
         '200':
-          description: Transaction modifiée avec succès.
-        '404':
-          description: Transaction non trouvée.
+          description: Transaction mise à jour avec succès
+          content:
+            application/json:
+              examples:
+                success:
+                  value:
+                    transactionId: "12345"
+                    description: "Achat de fournitures - modifié"
+                    type: "debit"
+                    amount: 50.75  # Le montant ne change pas
+                    date: "2025-01-10"
         '400':
-          description: Erreur de validation des données fournies.
-
+          description: Données invalides
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Données invalides"
+        '404':
+          description: Transaction non trouvée
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Transaction non trouvée"
+        '401':
+          description: Utilisateur non authentifié
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Utilisateur non authentifié"
     delete:
-      summary: Supprimer une transaction existante.
+      summary: Supprimer des informations d'une transaction
+      description: Permet à l'utilisateur de supprimer certaines informations d'une transaction, comme la description ou les autres détails, mais **pas le montant** ni **l'id de la transaction**.
+      security:
+        - bearerAuth: []  # Applique le mécanisme d'authentification pour cet endpoint
       parameters:
         - name: transactionId
           in: path
           required: true
-          description: Identifiant de la transaction à supprimer.
+          description: "ID unique de la transaction"
           schema:
             type: string
+            example: "12345"
       responses:
-        '204':
-          description: Transaction supprimée avec succès.
+        '200':
+          description: Informations de la transaction supprimées avec succès
+          content:
+            application/json:
+              examples:
+                success:
+                  value:
+                    description: "Achat de fournitures - modifié"
         '404':
-          description: Transaction non trouvée.
+          description: Transaction non trouvée
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Transaction non trouvée"
+        '401':
+          description: Utilisateur non authentifié
+          content:
+            application/json:
+              examples:
+                error:
+                  value:
+                    error: "Utilisateur non authentifié"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

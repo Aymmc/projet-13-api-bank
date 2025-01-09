@@ -5,11 +5,9 @@ import ArgentBanklogo from "../img/argentBankLogo.png";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../slices/authSlice";
-
 import useFetchUserProfile from "../hook/useFetchUserProfile";
 import Profil from "../img/profil.png";
 import deconnexion from "../img/deconnexion.png";
-
 
 const Headers = () => {
 

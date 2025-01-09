@@ -12,10 +12,9 @@ const Login = () => {
   const [getProfil] = useGetProfilMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [login, { isLoading }] = useLoginMutation();
 
-  const { TokenAuth } = useSelector((state) => state.auth);
+  // const { TokenAuth } = useSelector((state) => state.auth);
   const submitHandler = async (e) => {
     e.preventDefault();
     try {

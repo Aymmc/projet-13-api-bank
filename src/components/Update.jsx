@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import {useSelector } from "react-redux";
 import { setCredentials } from "../slices/authSlice";
 import { useUpdateUserMutation } from "../slices/usersApiSlice";
 
@@ -7,9 +7,7 @@ const Update = ({ onCancel }) => {
   const { userInfo, TokenAuth } = useSelector((state) => state.auth);
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
-  const dispatch = useDispatch();
   const [updateUser] = useUpdateUserMutation();
-  const [updateSuccess, setUpdateSuccess] = useState(false); // Nouvel état
 
   useEffect(() => {
     if (userInfo) {
@@ -60,7 +58,6 @@ const Update = ({ onCancel }) => {
         <button type="submit">Save</button>
         <button onClick={onCancel}>Cancel</button>
       </form>
-      {updateSuccess && <p>Profile updated successfully!</p>}{" "}
     </div>
   );
 };
